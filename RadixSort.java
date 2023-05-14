@@ -22,7 +22,7 @@ public class RadixSort
     static int[] generateRandomArray(int size, int maxValue) 
     {
         int[] array = new int[size];
-        Random random = new Random();
+        Random random = new Random(System.currentTimeMillis());
         for (int i = 0; i < size; i++) 
         {
             array[i] = random.nextInt(maxValue);
@@ -96,8 +96,8 @@ public class RadixSort
     	fileWriter.append("Number of operations");
     	fileWriter.append("\n");
     	
-        int size = 0; // Generate random array size between 5 and 10
-        for (size = 2; size<=2000; size ++){
+        int size = 0; 
+        for (size = 2; size<=1000; size ++){
 			int[] input = generateRandomArray(size, 1000);
 	        
 	        System.out.print("Input Array: ");

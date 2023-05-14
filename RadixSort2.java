@@ -1,5 +1,9 @@
 import java.util.ArrayList;
+import java.io.File;
+import java.io.FileWriter;
+import java.io.IOException;
 import java.lang.Math.*;
+import java.util.Random;
 
 public class RadixSort2 
 {
@@ -12,7 +16,16 @@ public class RadixSort2
 	@SuppressWarnings("unchecked")
 	static ArrayList<Integer>[] array2 = new ArrayList[10];
 	
-	static float[] input = {2.345f, 8.12f, 4.5678f, 6.07f, 4.1f, 1.1111f, 6.8888f, 5.3f};
+	static float[] generateRandomArray(int size, int maxValue) 
+    {
+        float[] array = new float[size];
+        Random random = new Random(System.currentTimeMillis());
+        for (int i = 0; i < size; i++) 
+        {
+            array[i] = random.nextFloat() * 1000;
+        }
+        return array;
+    }
 	
 	static void sort(ArrayList<Integer>[]fromArray, ArrayList<Integer>[]toArray, int maxDigits, int counter) 
 	{
@@ -87,53 +100,88 @@ public class RadixSort2
     	return maxDigits;
     }
 	
-	public static void main(String args[]) 
+	public static void main(String args[]) throws IOException
 	{
-	 	maxFloatingPlaces(input);
-	 	opCounter++;
-		for (int i = 0; i < 10; i++) 
-		{
-			array1[i] = new ArrayList<Integer>();
-			array2[i] = new ArrayList<Integer>();
-			opCounter = opCounter + 5;
-		}
-		for(int i=0; i<input.length; i++) 
-		{
-			input[i] = (float)(input[i]*Math.pow(10,maxFloatingPoints));
-			PlaceValue = (int)(input[i] % 10);
-			array1[PlaceValue].add((int)input[i]);
-			opCounter = opCounter + 6;
-		}
-		int maxDigits = findLargest(input);
-		sort(array1,array2,maxDigits,1);
-		opCounter = opCounter + 3;
-		if(maxDigits%2==0)
-		{
-			for(int i=0; i<10; i++) 
+		File csvWriter = new File("FloatingResults.csv");
+    	try {
+            if (csvWriter.exists()) {
+                csvWriter.delete(); // Delete the existing CSV file
+                csvWriter.createNewFile(); // Create a new empty CSV file
+            } 
+        } catch (IOException e) {
+            System.out.println("An error occurred: " + e.getMessage());
+        }
+    	
+        FileWriter fileWriter = new FileWriter(csvWriter, true);
+    	fileWriter.append("Number of inputs");
+    	fileWriter.append(",");
+    	fileWriter.append("Number of operations");
+    	fileWriter.append("\n");
+    	
+		int size = 0; 
+        for (size = 2; size<=50; size ++){
+			float[] input = generateRandomArray(size, 1000);
+			System.out.print("Input Array: ");
+	        for (int i = 0; i < input.length; i++) 
+	        {
+	            System.out.printf("%.5f%n",input[i]);
+	        }
+	        System.out.println();
+	        
+		 	maxFloatingPlaces(input);
+		 	opCounter++;
+			for (int i = 0; i < 10; i++) 
 			{
-				for(int j=0; j<array2[i].size(); j++) 
-				{
-					System.out.print(array2[i].get(j)/(Math.pow(10,maxFloatingPoints))+" ");
-					opCounter = opCounter + 3;
-				}
-				opCounter = opCounter + 3;
-            }
-		}
-		else
-		{
-			for(int i=0; i<10; i++) 
+				array1[i] = new ArrayList<Integer>();
+				array2[i] = new ArrayList<Integer>();
+				opCounter = opCounter + 5;
+			}
+			for(int i=0; i<input.length; i++) 
 			{
-				for(int j=0; j<array1[i].size(); j++) 
+				input[i] = (float)(input[i]*Math.pow(10,maxFloatingPoints));
+				PlaceValue = (int)(input[i] % 10);
+				array1[PlaceValue].add((int)input[i]);
+				opCounter = opCounter + 6;
+			}
+			int maxDigits = findLargest(input);
+			sort(array1,array2,maxDigits,1);
+			opCounter = opCounter + 3;
+			
+			if(maxDigits%2==0)
+			{
+				for(int i=0; i<10; i++) 
 				{
-					System.out.print(array1[i].get(j)/(Math.pow(10,maxFloatingPoints))+" ");
+					for(int j=0; j<array2[i].size(); j++) 
+					{
+						System.out.printf("%.5f%n",array2[i].get(j)/(Math.pow(10,maxFloatingPoints)));
+						opCounter = opCounter + 3;
+					}
 					opCounter = opCounter + 3;
-				}
-				opCounter = opCounter + 3;
-        	}
-        
+	            }
+			}
+			else
+			{
+				for(int i=0; i<10; i++) 
+				{
+					for(int j=0; j<array1[i].size(); j++) 
+					{
+						System.out.printf("%.5f%n",array1[i].get(j)/(Math.pow(10,maxFloatingPoints)));
+						opCounter = opCounter + 3;
+					}
+					opCounter = opCounter + 3;
+	        	}
+	        
+			}
+			System.out.println("");
+			System.out.println("Operation: " + opCounter + "\n");
+			
+			fileWriter.write(String.valueOf(size));
+		    fileWriter.write(",");
+		    fileWriter.write(String.valueOf(opCounter));
+		    fileWriter.write("\n");
 		}
-		System.out.println("");
-		System.out.println("Operation: " + opCounter);
+        fileWriter.flush();
+		fileWriter.close();
 	}
 }
 
