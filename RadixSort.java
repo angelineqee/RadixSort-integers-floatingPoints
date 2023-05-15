@@ -138,7 +138,7 @@ public class RadixSort
 		    opCounter = opCounter + 2;
 	        }
 	        
-		//add the digits into the array
+		//use array1 as buckets, put the elements from input array into array1 based on their smallest place value
 	        for(int i=0; i<input.length; i++) 
 	        {
 		    opCounter = opCounter + 4;
@@ -184,6 +184,7 @@ public class RadixSort
 		//display the number of operations of the code
 		    System.out.println("Operation: " +opCounter);
 
+		//write the number of inputs and number of operations of each iteration into the csv file to generate graph later
 		    fileWriter.write(String.valueOf(size));
 		    fileWriter.write(",");
 		    fileWriter.write(String.valueOf(opCounter));
