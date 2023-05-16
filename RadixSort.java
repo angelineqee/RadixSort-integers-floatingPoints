@@ -1,5 +1,5 @@
 //write results into CSV file
-//import neccessary libraries
+//import necessary libraries
 import java.util.ArrayList;
 import java.io.File;
 import java.io.FileWriter;
@@ -12,14 +12,6 @@ public class RadixSort
 	//declare variables
     static int PlaceValue; 	//variable to store the current place value during sorting
     static int opCounter = 0;	//counter to track the number of primitive operations
-
-    //create 2 arrays to hold the digits during sorting
-    @SuppressWarnings("unchecked")
-    static ArrayList<Integer>[] array1 = new ArrayList[10];
-    opCounter++;
-    @SuppressWarnings("unchecked")
-    static ArrayList<Integer>[] array2 = new ArrayList[10];
-    opCounter++;
     
     
 	//this method is to generate a random array elements
@@ -98,6 +90,13 @@ public class RadixSort
     
     public static void main(String args[]) throws IOException  
     {
+    	//create 2 arrays to hold the digits during sorting
+        @SuppressWarnings("unchecked")
+        ArrayList<Integer>[] array1 = new ArrayList[10];
+        opCounter++;
+        @SuppressWarnings("unchecked")
+        ArrayList<Integer>[] array2 = new ArrayList[10];
+        opCounter++;
 	    //create a new csv file to store the results
 	    //there are no incrementation of opCounter in the file processing section as it is not counted as the algorithm of sorting
     	File csvWriter = new File("results.csv");
@@ -117,7 +116,7 @@ public class RadixSort
     	fileWriter.append("Number of operations");
     	fileWriter.append("\n");
     	
-        for (size = 2; size<=1000; size ++){
+        for (int size = 2; size<=1000; size ++){
 		opCounter = opCounter + 4;
 		int[] input = generateRandomArray(size, 1000);	//generate random array elements
 		opCounter = opCounter + 2;
@@ -157,9 +156,8 @@ public class RadixSort
 		opCounter = opCounter + 2;
 	        if(maxDigits % 2 == 0)
 			{
-			    	for(int i=0; i<10; i++) 
+			    for(int i=0; i<10; i++) { 
 				opCounter = opCounter + 4;
-				{
 					for(int j=0; j<array2[i].size(); j++) 
 				    	{
 						opCounter = opCounter + 4;

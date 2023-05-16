@@ -1,5 +1,5 @@
 //write results into CSV file
-//import neccessary libraries
+//import necessary libraries
 import java.util.ArrayList;
 import java.io.File;
 import java.io.FileWriter;
@@ -14,13 +14,7 @@ public class RadixSort2
 	static int maxFloatingPoints = 0;	//variable to store the max number of floating points
 	static int opCounter = 0;	//counter to track the number of primitive operations
 	
-	//create 2 arrays to hold the digits during sorting
-	@SuppressWarnings("unchecked")
-	static ArrayList<Integer>[] array1 = new ArrayList[10];
-	opCounter++;
-	@SuppressWarnings("unchecked")
-	static ArrayList<Integer>[] array2 = new ArrayList[10];
-	opCounter++;
+	
 	
 	//this method is to generate a random array elements
 	static float[] generateRandomArray(int size, int maxValue) 
@@ -125,6 +119,13 @@ public class RadixSort2
 	
 	public static void main(String args[]) throws IOException
 	{
+		//create 2 arrays to hold the digits during sorting
+		@SuppressWarnings("unchecked")
+		ArrayList<Integer>[] array1 = new ArrayList[10];
+		opCounter++;
+		@SuppressWarnings("unchecked")
+		ArrayList<Integer>[] array2 = new ArrayList[10];
+		opCounter++;
 		//create a new csv file to store the results
 	    	//there are no incrementation of opCounter in the file processing section as it is not counted as the algorithm of sorting
 		File csvWriter = new File("FloatingResults.csv");
@@ -147,8 +148,7 @@ public class RadixSort2
 		fileWriter.append("Number of operations");
 		fileWriter.append("\n");
     	
-        	for (size = 2; size<=50; size ++)
-		{
+		for (int size = 2; size<=1000; size ++){
 			opCounter = opCounter + 4;
 			float[] input = generateRandomArray(size, 1000);	//generate random array elements
 			opCounter = opCounter+ 2;
@@ -199,7 +199,7 @@ public class RadixSort2
 						opCounter = opCounter + 4;
 						System.out.printf("%.5f%n",array2[i].get(j)/(Math.pow(10,maxFloatingPoints)));
 						opCounter = opCounter + 3;
-\					}
+					}
 	            		}
 			}
 			else
@@ -227,7 +227,7 @@ public class RadixSort2
 			fileWriter.write("\n");
 		}
         	fileWriter.flush();
-		fileWriter.close();
+        	fileWriter.close();
 	}
 }
 
