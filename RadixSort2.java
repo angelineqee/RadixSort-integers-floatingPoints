@@ -39,7 +39,7 @@ public class RadixSort2
 		return array;
     	}
 	
-	//radix sort algorothm for floating point
+	//radix sort algorithm for floating point
 	static void sort(ArrayList<Integer>[]fromArray, ArrayList<Integer>[]toArray, int maxDigits, int counter) 
 	{
 	    	opCounter++;
@@ -73,7 +73,7 @@ public class RadixSort2
 		}
 	}
 	
-	//method to find the max number of floating point in the array elements
+	//method to find the max number of digits after the floating point in the array elements
 	public static void maxFloatingPlaces(float[] arr)
 	{
 	 	String numStr = "";
@@ -157,7 +157,7 @@ public class RadixSort2
 			System.out.print("Input Array: ");
 	        	for (int i = 0; i < input.length; i++) 
 			{
-			    System.out.printf("%.5f%n",input[i]);
+			    System.out.printf("%.5f%n",input[i]); //print only 5 decimal points
 			}
 			System.out.println();
 	        
@@ -176,7 +176,7 @@ public class RadixSort2
 			for(int i=0; i<input.length; i++) 
 			{
 				opCounter = opCounter+ 4;
-				input[i] = (float)(input[i]*Math.pow(10,maxFloatingPoints));
+				input[i] = (float)(input[i]*Math.pow(10,maxFloatingPoints)); //convert the floating points to integer for sorting
 				PlaceValue = (int)(input[i] % 10);
 				array1[PlaceValue].add((int)input[i]);
 				opCounter = opCounter + 9;
