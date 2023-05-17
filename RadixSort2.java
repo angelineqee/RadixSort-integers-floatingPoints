@@ -4,7 +4,6 @@ import java.util.ArrayList;
 import java.io.File;
 import java.io.FileWriter;
 import java.io.IOException;
-import java.lang.Math.*;
 import java.util.Random;
 
 public class RadixSort2 
@@ -148,7 +147,7 @@ public class RadixSort2
 		fileWriter.append("Number of operations");
 		fileWriter.append("\n");
     	
-		for (int size = 2; size<=1000; size ++){
+		for (int size = 5; size<=200; size+=5){
 			opCounter = opCounter + 4;
 			float[] input = generateRandomArray(size, 1000);	//generate random array elements
 			opCounter = opCounter+ 2;
@@ -217,7 +216,7 @@ public class RadixSort2
 	        
 			}
 			System.out.println("");
-			//diaplay the number of operations of the code
+			//display the number of operations of the code
 			System.out.println("Operation: " + opCounter + "\n");
 			
 			//write the number of inputs and number of operations of each iteration into the csv file to generate graph later

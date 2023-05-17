@@ -115,7 +115,7 @@ public class RadixSort
 		fileWriter.append("Number of operations");
 		fileWriter.append("\n");
 
-		for (int size = 2; size<=1000; size ++)
+		for (int size = 5; size<=200; size+=5) //input 
 		{
 			int[] input = generateRandomArray(size, 1000);	//generate random array elements
 
