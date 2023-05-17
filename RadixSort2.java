@@ -1,11 +1,14 @@
 //write results into CSV file
 //import necessary libraries
+import java.util.Scanner;
 import java.util.ArrayList;
 import java.io.File;
 import java.io.FileWriter;
 import java.io.IOException;
 import java.lang.Math.*;
 import java.util.Random;
+
+
 
 public class RadixSort2 
 {
@@ -99,6 +102,8 @@ public class RadixSort2
 	
 	public static void main(String args[]) throws IOException
 	{
+		Scanner sc = new Scanner (System.in);
+
 		//create 2 arrays to hold the digits during sorting
 		@SuppressWarnings("unchecked")
 		ArrayList<Integer>[] array1 = new ArrayList[10];
@@ -107,12 +112,18 @@ public class RadixSort2
 		//create a new csv file to store the results
 	    //there are no incrementation of opCounter in the file processing section as it is not counted as the algorithm of sorting
 		File csvWriter = new File("FloatingResults.csv");
+		FileWriter fileWriter = new FileWriter(csvWriter, true);
+
     	try 
 		{
-            if (csvWriter.exists()) 
+            if (!csvWriter.exists()) 
 			{
-				csvWriter.delete(); // Delete the existing CSV file
+				// csvWriter.delete(); // Delete the existing CSV file
 				csvWriter.createNewFile(); // Create a new empty CSV file
+				fileWriter.append("Number of inputs");
+				fileWriter.append(",");
+				fileWriter.append("Number of operations");
+				fileWriter.append("\n");
 			} 
         } 
 		catch (IOException e) 
@@ -120,82 +131,86 @@ public class RadixSort2
         	System.out.println("An error occurred: " + e.getMessage());
         }
     	
-		FileWriter fileWriter = new FileWriter(csvWriter, true);
-		fileWriter.append("Number of inputs");
-		fileWriter.append(",");
-		fileWriter.append("Number of operations");
-		fileWriter.append("\n");
-    	
-		for (int size = 2; size<=300; size = size + 5)
-		{
-			float[] input = generateRandomArray(size, 1000);	//generate random array elements
-			
-			//display the array elements
-			System.out.print("Input Array: ");
-	        for (int i = 0; i < input.length; i++) 
-			{
-			    System.out.printf("%.5f%n",input[i]); //print only 5 decimal points
-			}
-			System.out.println();
-	        
-		 	maxFloatingPlaces(input);	//call the method to find the max floating point for the input	(calling method)
-			
-			for (int i = 0; i < 10; i++) 
-			{
-				array1[i] = new ArrayList<Integer>();
-				array2[i] = new ArrayList<Integer>();
-			}
-			
-			//use array1 as buckets, put the elements from input array into array1 based on their smallest place value
-			for(int i=0; i<input.length; i++)	//(1 assignment, 1 comparison, 1 arithmetic)
-			{
-				input[i] = (float)(input[i]*Math.pow(10,maxFloatingPoints)); //convert the floating points to integer for sorting (1 assignment)
-				PlaceValue = (int)(input[i] % 10);	//(1 assignment)
-				array1[PlaceValue].add((int)input[i]);
-				opCounter = opCounter + 5;
-			}
-			
-			int maxDigits = findLargest(input);	//(1 assignment, 1 calling method)
-			//sort the array elements
-			sort(array1,array2,maxDigits,1);	//(1 arithmetic)
-			opCounter++;
-			
-			//if the number of digit in the number is even number then it will get from array 2
-			if(maxDigits%2==0)	//(1 comparison)
-			{
-				for(int i=0; i<10; i++)	//(1 assignment, 1 comparison, 1 arithmetic)
-				{
-					for(int j=0; j<array2[i].size(); j++)	//(1 assignment, 1 comparison, 1 arithmetic) 
-					{
-						System.out.printf("%.5f%n",array2[i].get(j)/(Math.pow(10,maxFloatingPoints)));	//(1 arithmetic)
-					}
-	            }
-			}
-			//if the number of digit in the number is odd number then it will get from array 1
-			else
-			{
-				for(int i=0; i<10; i++)	//(1 assignment, 1 comparison, 1 arithmetic)
-				{
-					for(int j=0; j<array1[i].size(); j++)	//(1 assignment, 1 comparison, 1 arithmetic)
-					{
-						System.out.printf("%.5f%n",array1[i].get(j)/(Math.pow(10,maxFloatingPoints))); //(1 arithmetic)
-					}
-	        	}
-	        
-			}
-			System.out.println("");
-			//diaplay the number of operations of the code
-			System.out.println("Operation: " + opCounter + "\n");
-			
-			//write the number of inputs and number of operations of each iteration into the csv file to generate graph later
-			fileWriter.write(String.valueOf(size));
-			fileWriter.write(",");
-			fileWriter.write(String.valueOf(opCounter));
-			fileWriter.write("\n");
+		System.out.print("How many number you want to sort: ");
+		int size = sc.nextInt();
+		System.out.println();
 
-			opCounter = 0;
+		float[] input = generateRandomArray(size, 1000);	//generate random array elements
+		
+		//display the array elements
+		System.out.print("Input Array: \t");
+		for (int i = 0; i < input.length; i++) 
+		{
+			System.out.printf("%.5f",input[i] ); //print only 5 decimal points
+			System.out.print(" ");
 		}
-        fileWriter.flush();
-    	fileWriter.close();
+		
+		maxFloatingPlaces(input);	//call the method to find the max floating point for the input	(calling method)
+		
+		for (int i = 0; i < 10; i++) 
+		{
+			array1[i] = new ArrayList<Integer>();
+			array2[i] = new ArrayList<Integer>();
+		}
+		
+		//use array1 as buckets, put the elements from input array into array1 based on their smallest place value
+		for(int i=0; i<input.length; i++)	//(1 assignment, 1 comparison, 1 arithmetic)
+		{
+			input[i] = (float)(input[i]*Math.pow(10,maxFloatingPoints)); //convert the floating points to integer for sorting (1 assignment)
+			PlaceValue = (int)(input[i] % 10);	//(1 assignment)
+			array1[PlaceValue].add((int)input[i]);
+			opCounter = opCounter + 5;
+		}
+		
+		int maxDigits = findLargest(input);	//(1 assignment, 1 calling method)
+		//sort the array elements
+		sort(array1,array2,maxDigits,1);	//(1 arithmetic)
+		opCounter++;
+		
+		System.out.println();
+		System.out.println("\nAfter Sorting: \t");
+		//if the number of digit in the number is even number then it will get from array 2
+		if(maxDigits%2==0)	//(1 comparison)
+		{
+			for(int i=0; i<10; i++)	//(1 assignment, 1 comparison, 1 arithmetic)
+			{
+				for(int j=0; j<array2[i].size(); j++)	//(1 assignment, 1 comparison, 1 arithmetic) 
+				{
+					System.out.printf("%.5f",array2[i].get(j)/(Math.pow(10,maxFloatingPoints)) );	//(1 arithmetic)
+					System.out.print(" ");
+				}
+			}
+		}
+		//if the number of digit in the number is odd number then it will get from array 1
+		else
+		{
+			for(int i=0; i<10; i++)	//(1 assignment, 1 comparison, 1 arithmetic)
+			{
+				for(int j=0; j<array1[i].size(); j++)	//(1 assignment, 1 comparison, 1 arithmetic)
+				{
+					System.out.printf("%.5f",array1[i].get(j)/(Math.pow(10,maxFloatingPoints))); //(1 arithmetic)
+					System.out.print(" ");
+				}
+			}
+		
+		}
+		System.out.println();
+		System.out.println();
+		System.out.println("No of Input: \t" + size);
+		//diaplay the number of operations of the code
+		System.out.println("Operations: \t" + opCounter + "\n");
+		
+		//write the number of inputs and number of operations of each iteration into the csv file to generate graph later
+		fileWriter.write(String.valueOf(size));
+		fileWriter.write(",");
+		fileWriter.write(String.valueOf(opCounter));
+		fileWriter.write("\n");
+
+		opCounter = 0;
+
+		sc.close();
+
+		fileWriter.flush();
+		fileWriter.close();
 	}
 }
