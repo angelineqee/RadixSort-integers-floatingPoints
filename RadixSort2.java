@@ -14,22 +14,16 @@ public class RadixSort2
 	static int maxFloatingPoints = 0;	//variable to store the max number of floating points
 	static int opCounter = 0;	//counter to track the number of primitive operations
 	
-	
-	
+		
 	//this method is to generate a random array elements
 	static float[] generateRandomArray(int size, int maxValue) 
     	{
 		float[] array = new float[size];
-		opCounter++;
 		Random random = new Random(System.currentTimeMillis());
-		opCounter++;
 		for (int i = 0; i < size; i++) 
 		{
-			opCounter = opCounter + 4;
 		    	array[i] = random.nextFloat() * 1000;	//assign a random value
-			opCounter = opCounter + 2;
 		}
-		opCounter++;
 		return array;
     	}
 	
@@ -39,7 +33,7 @@ public class RadixSort2
 	    	opCounter++;
 		if(counter<maxDigits)	//if the current counter is less than the max number of digits
 		{
-	       	for(int i=0; i<10; i++) 	//iterate over each ArrayList in the fromArray
+	       		for(int i=0; i<10; i++) 	//iterate over each ArrayList in the fromArray
 			{
 				opCounter = opCounter + 4;
 				for(int j=0; j<fromArray[i].size(); j++) 	//iterate over each element in the current ArrayList
@@ -149,9 +143,7 @@ public class RadixSort2
 		fileWriter.append("\n");
     	
 		for (int size = 2; size<=1000; size ++){
-			opCounter = opCounter + 4;
 			float[] input = generateRandomArray(size, 1000);	//generate random array elements
-			opCounter = opCounter+ 2;
 			
 			//display the array elements
 			System.out.print("Input Array: ");
@@ -188,6 +180,7 @@ public class RadixSort2
 			sort(array1,array2,maxDigits,1);
 			opCounter++;
 			
+			//if the number of digit in the number is even number then it will get from array 2
 			opCounter = opCounter + 2;
 			if(maxDigits%2==0)
 			{
@@ -202,6 +195,7 @@ public class RadixSort2
 					}
 	            		}
 			}
+			//if the number of digit in the number is odd number then it will get from array 1
 			else
 			{
 				for(int i=0; i<10; i++) 
