@@ -4,6 +4,7 @@ import java.util.ArrayList;
 import java.io.File;
 import java.io.FileWriter;
 import java.io.IOException;
+import java.lang.Math.*;
 import java.util.Random;
 
 public class RadixSort2 
@@ -16,46 +17,44 @@ public class RadixSort2
 		
 	//this method is to generate a random array elements
 	static float[] generateRandomArray(int size, int maxValue) 
-    	{
+    {
 		float[] array = new float[size];
 		Random random = new Random(System.currentTimeMillis());
 		for (int i = 0; i < size; i++) 
 		{
-		    	array[i] = random.nextFloat() * 1000;	//assign a random value
+		    array[i] = random.nextFloat() * 1000;	//assign a random value
 		}
 		return array;
-    	}
+    }
 	
 	//radix sort algorithm for floating point
 	static void sort(ArrayList<Integer>[]fromArray, ArrayList<Integer>[]toArray, int maxDigits, int counter) 
 	{
-	    	opCounter++;
-		if(counter<maxDigits)	//if the current counter is less than the max number of digits
+	    opCounter++;
+		if(counter<maxDigits)	//if the current counter is less than the max number of digits (1 comparison)
 		{
-	       		for(int i=0; i<10; i++) 	//iterate over each ArrayList in the fromArray
+	       	for(int i=0; i<10; i++) 	//iterate over each ArrayList in the fromArray (1 assignment, 1 comparison, 1 arithmetic)
 			{
-				opCounter = opCounter + 4;
-				for(int j=0; j<fromArray[i].size(); j++) 	//iterate over each element in the current ArrayList
+				opCounter = opCounter + 3;
+				for(int j=0; j<fromArray[i].size(); j++) 	//iterate over each element in the current ArrayList (1 assignment, 1 comparison, 1 arithmetic)
 				{
-					opCounter = opCounter + 4;
+					opCounter = opCounter + 3;
 					opCounter++;
-			    		if(counter==(maxDigits-1))	//if it is the last digits
+			    	if(counter==(maxDigits-1))	//if it is the last digits (1 comparison)
 					{
-	                			PlaceValue = fromArray[i].get(j)/((int)Math.pow(10, counter));	//calculate the place value
-	                			opCounter = opCounter + 4;
-	            			}
+						PlaceValue = fromArray[i].get(j)/((int)Math.pow(10, counter));	//calculate the place value (1 assignment, 1 arithmetic)
+						opCounter = opCounter + 2;
+					}
 				    	else
 					{
-	                			PlaceValue = fromArray[i].get(j)/((int)Math.pow(10, counter))%10;	//calculate the place value before the last digit
-	                			opCounter = opCounter + 5;
-	            			}
+						PlaceValue = fromArray[i].get(j)/((int)Math.pow(10, counter))%10;	//calculate the place value before the last digit (1 assignment, 2 arithmetic)
+						opCounter = opCounter + 3;
+					}
 					toArray[PlaceValue].add(fromArray[i].get(j));	//add the element to the corresponding ArrayList in the toArray
-					opCounter = opCounter + 4;
 				}
-			fromArray[i].clear();	//clear the current ArrayList in the fromArray
-			opCounter = opCounter + 2;
+				fromArray[i].clear();	//clear the current ArrayList in the fromArray
 			}
-		sort(toArray,fromArray, maxDigits, counter+1);
+		sort(toArray,fromArray, maxDigits, counter+1);	//call method sort (1 calling)
 		opCounter++; 
 		}
 	}
@@ -64,76 +63,62 @@ public class RadixSort2
 	public static void maxFloatingPlaces(float[] arr)
 	{
 	 	String numStr = "";
-       		int floatingPlaces = 0;
-       		opCounter++;
-	    	for(int i=0; i<arr.length; i++)
+		int floatingPlaces = 0;
+		for(int i=0; i<arr.length; i++) 	//(1 comparison, 1 assignment, 1 arithmetic)
 		{
-			opCounter = opCounter+ 4;
-			numStr = String.valueOf(arr[i]);	//change the floating point become string then store it into the numStr
-	      	    	opCounter++;
+			numStr = String.valueOf(arr[i]);	//change the floating point become string then store it into the numStr (1 assignment)
 			
 			if (numStr.contains(".")) 
 			{
-            			floatingPlaces = numStr.length() - numStr.indexOf(".") - 1;	//use the numStr to minus away the integer and store the remaining as the number of floating points
-            			opCounter = opCounter + 5;
-            		}
+				floatingPlaces = numStr.length() - numStr.indexOf(".") - 1;	//use the numStr to minus away the integer and store the remaining as the number of floating points (1 assignment, 2 arithmetic)
+			}
 			
-               		opCounter++;
-            		if (floatingPlaces > maxFloatingPoints) 	//if floating points larger than max floating points 
-		    	{
-                		maxFloatingPoints = floatingPlaces;	//assign the current floatingPlaces to maxFloatingPoints
-                		opCounter++;
-            		}
+			if (floatingPlaces > maxFloatingPoints) 	//if floating points larger than max floating points (1 comparison)
+			{
+				maxFloatingPoints = floatingPlaces;	//assign the current floatingPlaces to maxFloatingPoints (1 assignment)
+			}
 	  	}
 	}
 	
 	//method to find the largest number of digits in the array
 	public static int findLargest(float[] arr) 
 	{
-      		int max = Integer.MIN_VALUE;	//assign the min number to max
-		opCounter++;
-        	int maxDigits = 0;
-		opCounter++;
-        	for (int i = 0; i < arr.length; i++) 
+      	int max = Integer.MIN_VALUE;	//assign the min number to max (1 assignment)
+        int maxDigits = 0; //(1 assignment)
+        for (int i = 0; i < arr.length; i++)	//(1 assignment, 1 comparison, 1 arithmetic)
 		{
-			opCounter = opCounter + 4;
-		    	opCounter++;
-			//assign the current array element to max if it is larger than the current max
+			//assign the current array element to max if it is larger than the current max (1 comparison)
 			if ((int)arr[i] > max) 
 			{
-               			max = (int)arr[i];
-                		maxDigits = (int)Math.log10(max) + 1;
-                		opCounter = opCounter + 5;
-            		}
-        	}
-       		opCounter++;
-    		return maxDigits;
-    	}
+				max = (int)arr[i];	//(1 assignment)
+				maxDigits = (int)Math.log10(max) + 1;	//(1 assignment, 1 arithmetic)
+            }
+        }
+    	return maxDigits;	//(1 return)
+    }
 	
 	public static void main(String args[]) throws IOException
 	{
 		//create 2 arrays to hold the digits during sorting
 		@SuppressWarnings("unchecked")
 		ArrayList<Integer>[] array1 = new ArrayList[10];
-		opCounter++;
 		@SuppressWarnings("unchecked")
 		ArrayList<Integer>[] array2 = new ArrayList[10];
-		opCounter++;
 		//create a new csv file to store the results
-	    	//there are no incrementation of opCounter in the file processing section as it is not counted as the algorithm of sorting
+	    //there are no incrementation of opCounter in the file processing section as it is not counted as the algorithm of sorting
 		File csvWriter = new File("FloatingResults.csv");
-    		try 
+    	try 
 		{
-            		if (csvWriter.exists()) 
+            if (csvWriter.exists()) 
 			{
-               			csvWriter.delete(); // Delete the existing CSV file
-                		csvWriter.createNewFile(); // Create a new empty CSV file
-            		} 
-        	} 
+				csvWriter.delete(); // Delete the existing CSV file
+				csvWriter.createNewFile(); // Create a new empty CSV file
+			} 
+        } 
 		catch (IOException e) 
 		{
-            		System.out.println("An error occurred: " + e.getMessage());
-        	}
+        	System.out.println("An error occurred: " + e.getMessage());
+        }
     	
 		FileWriter fileWriter = new FileWriter(csvWriter, true);
 		fileWriter.append("Number of inputs");
@@ -141,77 +126,65 @@ public class RadixSort2
 		fileWriter.append("Number of operations");
 		fileWriter.append("\n");
     	
-		for (int size = 5; size<=200; size+=5){
-			opCounter = opCounter + 4;
+		for (int size = 2; size<=300; size = size + 5)
+		{
 			float[] input = generateRandomArray(size, 1000);	//generate random array elements
 			
 			//display the array elements
 			System.out.print("Input Array: ");
-	        	for (int i = 0; i < input.length; i++) 
+	        for (int i = 0; i < input.length; i++) 
 			{
 			    System.out.printf("%.5f%n",input[i]); //print only 5 decimal points
 			}
 			System.out.println();
 	        
-		 	maxFloatingPlaces(input);	//call the method to find the max floating point for the input
-		 	opCounter++;
+		 	maxFloatingPlaces(input);	//call the method to find the max floating point for the input	(calling method)
 			
 			for (int i = 0; i < 10; i++) 
 			{
-				opCounter = opCounter + 4;
 				array1[i] = new ArrayList<Integer>();
 				array2[i] = new ArrayList<Integer>();
-				opCounter = opCounter + 2;
 			}
 			
 			//use array1 as buckets, put the elements from input array into array1 based on their smallest place value
-			for(int i=0; i<input.length; i++) 
+			for(int i=0; i<input.length; i++)	//(1 assignment, 1 comparison, 1 arithmetic)
 			{
-				opCounter = opCounter+ 4;
-				input[i] = (float)(input[i]*Math.pow(10,maxFloatingPoints)); //convert the floating points to integer for sorting
-				PlaceValue = (int)(input[i] % 10);
+				input[i] = (float)(input[i]*Math.pow(10,maxFloatingPoints)); //convert the floating points to integer for sorting (1 assignment)
+				PlaceValue = (int)(input[i] % 10);	//(1 assignment)
 				array1[PlaceValue].add((int)input[i]);
-				opCounter = opCounter + 9;
+				opCounter = opCounter + 5;
 			}
 			
-			int maxDigits = findLargest(input);
-			opCounter = opCounter + 2;
+			int maxDigits = findLargest(input);	//(1 assignment, 1 calling method)
 			//sort the array elements
-			sort(array1,array2,maxDigits,1);
+			sort(array1,array2,maxDigits,1);	//(1 arithmetic)
 			opCounter++;
 			
 			//if the number of digit in the number is even number then it will get from array 2
-			opCounter = opCounter + 2;
-			if(maxDigits%2==0)
+			if(maxDigits%2==0)	//(1 comparison)
 			{
-				for(int i=0; i<10; i++) 
+				for(int i=0; i<10; i++)	//(1 assignment, 1 comparison, 1 arithmetic)
 				{
-					opCounter = opCounter+ 4;
-					for(int j=0; j<array2[i].size(); j++) 
+					for(int j=0; j<array2[i].size(); j++)	//(1 assignment, 1 comparison, 1 arithmetic) 
 					{
-						opCounter = opCounter + 4;
-						System.out.printf("%.5f%n",array2[i].get(j)/(Math.pow(10,maxFloatingPoints)));
-						opCounter = opCounter + 3;
+						System.out.printf("%.5f%n",array2[i].get(j)/(Math.pow(10,maxFloatingPoints)));	//(1 arithmetic)
 					}
-	            		}
+	            }
 			}
 			//if the number of digit in the number is odd number then it will get from array 1
 			else
 			{
-				for(int i=0; i<10; i++) 
+				for(int i=0; i<10; i++)	//(1 assignment, 1 comparison, 1 arithmetic)
 				{
-					opCounter= opCounter + 4;
-					for(int j=0; j<array1[i].size(); j++) 
+					for(int j=0; j<array1[i].size(); j++)	//(1 assignment, 1 comparison, 1 arithmetic)
 					{
-						opCounter = opCounter + 4;
-						System.out.printf("%.5f%n",array1[i].get(j)/(Math.pow(10,maxFloatingPoints)));
-						opCounter = opCounter + 3;
+						System.out.printf("%.5f%n",array1[i].get(j)/(Math.pow(10,maxFloatingPoints))); //(1 arithmetic)
 					}
-	        		}
+	        	}
 	        
 			}
 			System.out.println("");
-			//display the number of operations of the code
+			//diaplay the number of operations of the code
 			System.out.println("Operation: " + opCounter + "\n");
 			
 			//write the number of inputs and number of operations of each iteration into the csv file to generate graph later
@@ -219,14 +192,10 @@ public class RadixSort2
 			fileWriter.write(",");
 			fileWriter.write(String.valueOf(opCounter));
 			fileWriter.write("\n");
+
+			opCounter = 0;
 		}
-        	fileWriter.flush();
-        	fileWriter.close();
+        fileWriter.flush();
+    	fileWriter.close();
 	}
 }
-
-
-
-
-
-
