@@ -175,8 +175,6 @@ public class RadixSort
         fileWriter.write(",");
         fileWriter.write(String.valueOf(opCounter));
         fileWriter.write("\n");
-
-        opCounter = 0;
     
         fileWriter.flush();
         fileWriter.close();
